@@ -495,9 +495,8 @@ while running:
 
     # if player died and the explosion has finished, end game
     if player.lives == 0 and not death_explosion.alive():
-        running = False
-        # menu_display = True
-        # pygame.display.update()
+        menu_display = True
+        pygame.display.update()
 
     #3 Draw/render
     screen.fill(BLACK)
