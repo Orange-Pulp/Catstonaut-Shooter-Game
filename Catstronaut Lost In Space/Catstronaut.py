@@ -5,18 +5,18 @@ import random
 from os import path
 
 # Pulling data from assets folder
-img_dir = path.join(path.dirname(__file__), 'assets')
-sound_folder = path.join(path.dirname(__file__), 'sounds')
+img_dir = path.join(path.dirname(__file__), 'Game_Photos')
+sound_folder = path.join(path.dirname(__file__), 'Game_Audio')
 
 # Define Pygame window settings
 WIDTH = 600
 HEIGHT = 600
 FPS = 120 # you don't need to use 120 fps, but I prefer it.
-POWERUP_TIME = 5000
+POWERUP_TIME = 3000 # Powerups last 3 seconds to make the game a little challenging
 BAR_LENGTH = 100
 BAR_HEIGHT = 10
 
-# Defining the colors for our Catstronaut 
+# Defining the colors for our Catstronaut and the rest of the assets 
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 RED = (255, 0, 0)
@@ -26,25 +26,22 @@ YELLOW = (255, 255, 0)
 
 # Initialize pygame and creating game window
 pygame.init()
-pygame.mixer.init()  # This be for in-game sound affects
+pygame.mixer.init()  # This code be for in-game sound affects
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Catstronaut Lost In Space")
-clock = pygame.time.Clock() # This is syncing the FPS
+clock = pygame.time.Clock()# This is for syncing the FPS
 
 
-font_name = pygame.font.match_font('arial')
+font_name = pygame.font.match_font("arial")
 
 def main_menu():
-    global screen
-
-    menu_song = pygame.mixer.music.load(path.join(sound_folder, "Cool-music.ogg"))
-    pygame.mixer.music.play(-1)
-
-    title = pygame.image.load(path.join(img_dir, "main.png")).convert()
+    global screen    
+    title = pygame.image.load(path.join(img_dir, "Menu_Pic.png")).convert()
     title = pygame.transform.scale(title, (WIDTH, HEIGHT), screen)
 
     screen.blit(title, (0,0))
     pygame.display.update()
+
 
     while True:
         ev = pygame.event.poll()
@@ -57,23 +54,21 @@ def main_menu():
         elif ev.type == pygame.QUIT:
                 pygame.quit()
                 quit() 
-        else: # For displaying the menue options
+        else: # For displaying the menu options
             draw_text(screen, "Press [ENTER] To Begin", 30, WIDTH/2, HEIGHT/2)
-            draw_text(screen, "or [Q] To Quit", 30, WIDTH/2, (HEIGHT/2)+50)
+            draw_text(screen, "Press [ESC] or [Q] To Quit", 30, WIDTH/2, (HEIGHT/2)+50)
             pygame.display.update()
 
-    #pygame.mixer.music.stop()
+
     ready = pygame.mixer.Sound(path.join(sound_folder,'Little-kitty-meow.ogg'))
     ready.play()
-    screen.fill(BLACK)
-    draw_text(screen, "GET READY!", 40, WIDTH/2, HEIGHT/2)
     pygame.display.update()
     
 
 def draw_text(surf, text, size, x, y):
     # selecting a cross platform font to display the score
     font = pygame.font.Font(font_name, size)
-    text_surface = font.render(text, True, WHITE)       ## True denotes the font to be anti-aliased 
+    text_surface = font.render(text, True, WHITE)   
     text_rect = text_surface.get_rect()
     text_rect.midtop = (x, y)
     surf.blit(text_surface, text_rect)
@@ -99,11 +94,13 @@ def draw_lives(surf, x, y, lives, img):
         img_rect.y = y
         surf.blit(img, img_rect)
 
+
 # Bring on them asteroids 
 def newmob():
     mob_element = Mob()
     all_sprites.add(mob_element)
     mobs.add(mob_element)
+
 
 # For exploding thingys 
 class Explosion(pygame.sprite.Sprite):
@@ -117,7 +114,7 @@ class Explosion(pygame.sprite.Sprite):
         self.last_update = pygame.time.get_ticks()
         self.frame_rate = 75
 
-
+# Some things for timing and stuff
     def update(self):
         now = pygame.time.get_ticks()
         if now - self.last_update > self.frame_rate:
@@ -135,11 +132,11 @@ class Explosion(pygame.sprite.Sprite):
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
-        # Scale data for the player image (you can change this to make the cat huuuge)
+        # All of these variables can be changed to edit game functions (you can  even make the cat huuuge)
         self.image = pygame.transform.scale(player_img, (120, 120))
         self.image.set_colorkey(BLACK)
         self.rect = self.image.get_rect()
-        self.radius = 20
+        self.radius = 50
         self.rect.centerx = WIDTH / 2
         self.rect.bottom = HEIGHT - 10
         self.speedx = 0 
@@ -158,17 +155,17 @@ class Player(pygame.sprite.Sprite):
             self.power -= 1
             self.power_time = pygame.time.get_ticks()
 
-        # unhide 
+        # Unhide the cato
         if self.hidden and pygame.time.get_ticks() - self.hide_timer > 1000:
             self.hidden = False
             self.rect.centerx = WIDTH / 2
             self.rect.bottom = HEIGHT - 30
 
-        # makes the player static in the screen by default. 
+        # This makes the Kitty static in the screen by default. 
         self.speedx = 0    
         
 
-        # will give back a list of the keys which happen to be pressed down at that moment
+        # This will give back a list of the keys which happen to be pressed down at that moment
         keystate = pygame.key.get_pressed()     
         if keystate[pygame.K_LEFT]:
             self.speedx = -5
@@ -241,14 +238,14 @@ class Mob(pygame.sprite.Sprite):
         self.radius = int(self.rect.width *0.90 / 2)
         self.rect.x = random.randrange(0, WIDTH - self.rect.width)
         self.rect.y = random.randrange(-150, -100)
-        self.speedy = random.randrange(5, 40)        # for randomizing the speed of the Mob
+        self.speedy = random.randrange(10, 50)   # for randomizing the speed of the Mob
 
         # randomize the movements a little more 
         self.speedx = random.randrange(-3, 3)
 
         # adding rotation to the mob element
         self.rotation = 0
-        self.rotation_speed = random.randrange(-8, 8)
+        self.rotation_speed = random.randrange(-8, 10)
         self.last_update = pygame.time.get_ticks()  # time when the rotation has to happen
         
     def rotate(self):
@@ -305,6 +302,7 @@ class Bullet(pygame.sprite.Sprite):
         self.rect.centerx = x
         self.speedy = -10
 
+
     def update(self):
         self.rect.y += self.speedy
         # kill the sprite after it moves over the top border
@@ -327,7 +325,6 @@ class Missile(pygame.sprite.Sprite):
         self.speedy = -10
 
     def update(self):
-        """should spawn right in front of the player"""
         self.rect.y += self.speedy
         if self.rect.bottom < 0:
             self.kill()
@@ -337,11 +334,10 @@ class Missile(pygame.sprite.Sprite):
 background = pygame.image.load(path.join(img_dir, 'Galaxy.png')).convert()
 background_rect = background.get_rect()
 # ^ Background first
-
 player_img = pygame.image.load(path.join(img_dir, 'Catstronaut.png')).convert()
 player_mini_img = pygame.transform.scale(player_img, (25, 19))
 player_mini_img.set_colorkey(BLACK)
-bullet_img = pygame.image.load(path.join(img_dir, 'Big_Laser.png')).convert()
+bullet_img = pygame.image.load(path.join(img_dir, 'Big_Red_Laser.png')).convert()
 missile_img = pygame.image.load(path.join(img_dir, 'Big_Boom_Device.png')).convert_alpha()
 # meteor_img = pygame.image.load(path.join(img_dir, 'meteorBrown_med1.png')).convert()
 meteor_images = []
@@ -390,24 +386,23 @@ missile_sound = pygame.mixer.Sound(path.join(sound_folder, 'rocket.ogg'))
 expl_sounds = []
 for sound in ['expl3.wav', 'expl6.wav']:
     expl_sounds.append(pygame.mixer.Sound(path.join(sound_folder, sound)))
-# main background music
-pygame.mixer.music.set_volume(0.2)      # Simmered the sound down a little
+# This is the volume variable for the main backround music
+pygame.mixer.music.set_volume(1.0)
 
-player_die_sound = pygame.mixer.Sound(path.join(sound_folder, 'rumble1.ogg'))
+player_die_sound = pygame.mixer.Sound(path.join(sound_folder, 'Rumble_sound.ogg')) and pygame.mixer.Sound(path.join(sound_folder, 'Wiird kitty meow.ogg'))
 
-# Game loop
+# Ok finally here be the main game loop
 running = True
 menu_display = True
 while running:
     if menu_display:
         main_menu()
         pygame.time.wait(3000)
-
         #Stop menu music
         pygame.mixer.music.stop()
         #Play the gameplay music
         pygame.mixer.music.load(path.join(sound_folder, 'Cool-music.ogg'))
-        pygame.mixer.music.play(-1)     ## makes the gameplay sound in an endless loop
+        pygame.mixer.music.play(-1)  # This makes the rad gameplay music play in an endless loop
         
         menu_display = False
         
@@ -416,9 +411,9 @@ while running:
         player = Player()
         all_sprites.add(player)
 
-        ## spawn a group of mob
+        # Spawn you a group of mobs
         mobs = pygame.sprite.Group()
-        for i in range(8):      ## 8 mobs
+        for i in range(8):   # 8 mobs max to be spawned
             # mob_element = Mob()
             # all_sprites.add(mob_element)
             # mobs.add(mob_element)
@@ -432,9 +427,9 @@ while running:
         score = 0
         
     #1 Process input/events
-    clock.tick(FPS)     ## will make the loop run at the same speed all the time
+    clock.tick(FPS)   # will make the loop run at the same speed all the time
     for event in pygame.event.get():        # gets all the events which have occured till now and keeps tab of them.
-        ## listening for the the X button at the top
+        # listening for the the X button at the top
         if event.type == pygame.QUIT:
             running = False
 
@@ -455,7 +450,7 @@ while running:
     # now as we delete the mob element when we hit one with a bullet, we need to respawn them again
     # as there will be no mob_elements left out 
     for hit in hits:
-        score += 50 - hit.radius         ## give different scores for hitting big and small metoers
+        score += 50 - hit.radius         # give different scores for hitting big and small metoers
         random.choice(expl_sounds).play()
         
         expl = Explosion(hit.rect.center, 'lg')
@@ -464,10 +459,10 @@ while running:
             pow = Pow(hit.rect.center)
             all_sprites.add(pow)
             powerups.add(pow)
-        newmob()        # spawn a new mob
+        newmob()  # spawn a new mob
 
 
-    # check if the player collides with the mob (bad day for the catstronaut)
+    # check if the kitty collides with the mob (bad day for the catstronaut)
     hits = pygame.sprite.spritecollide(player, mobs, True, pygame.sprite.collide_circle)       
     for hit in hits:
         player.shield -= hit.radius * 2
@@ -478,7 +473,7 @@ while running:
             player_die_sound.play()
             death_explosion = Explosion(player.rect.center, 'player')
             all_sprites.add(death_explosion)
-            # running = False     ## GAME OVER 3:D
+            # running = False
             player.hide()
             player.lives -= 1
             player.shield = 100
@@ -498,9 +493,9 @@ while running:
         menu_display = True
         pygame.display.update()
 
-    #3 Draw/render
+    #3 Draw and render
     screen.fill(BLACK)
-    # draw the stargaze.png image
+    # draw the background image
     screen.blit(background, background_rect)
 
     all_sprites.draw(screen)
