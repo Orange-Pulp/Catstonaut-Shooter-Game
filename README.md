@@ -4,4 +4,4 @@ This is a simple space-invaders style game I made in python while learning to us
 
 Here is the link to the pygame git repo https://github.com/pygame you will need to have it in some form to play this game. 
 
-Thanks for checking this out, Have fun!
+Thanks for checking this out, Have fun blasting them asteroids!
