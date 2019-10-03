@@ -75,7 +75,6 @@ def draw_text(surf, text, size, x, y):
 
 
 def draw_shield_bar(surf, x, y, pct):
-    
     pct = max(pct, 0) 
     # moving them to top
     # BAR_LENGTH = 100
@@ -493,9 +492,9 @@ while running:
         menu_display = True
         pygame.display.update()
 
-    #3 Draw and render
+    # 3 Draw and render
     screen.fill(BLACK)
-    # draw the background image
+    # Draw them rad background images
     screen.blit(background, background_rect)
 
     all_sprites.draw(screen)
@@ -505,5 +504,5 @@ while running:
     # Draw lives
     draw_lives(screen, WIDTH - 100, 5, player.lives, player_mini_img)
 
-    # Done after drawing everything to the screen
-    pygame.display.flip()       
+    # Making sure we get the right orientation here (no upside-down catstronauts)
+    pygame.display.flip()    
