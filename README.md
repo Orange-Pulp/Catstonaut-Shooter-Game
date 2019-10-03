@@ -1,7 +1,7 @@
 # Catstonaut-Shooter-Game
 
-This is a simple space-invaders style game I made in python using the graphics module pygame. Dodge asteroids and pickup 
-shields and powerups to extend your health, or activate rapid fire or rockets.
+This is a simple space-invaders style game I made in python while learning to use the graphics module pygame. The game takes place in some random galaxy where the catstronaut needs to dodge asteroids and pickup shields and powerups to extend your health, or activate rapid fire or rockets. This is one of those games that you play when you are bored and need cat memes. I had a ton of fun making it and I hope you enjoy playing it too. I may add some different modes if I get around to it. 
 
-Update, verion 1.1. I Added a loop to bring you back to the main menu when you die. This allows you to restart and  
-play continuously without needing to close and re-start the game. In-game difficulty options and speed mods are hopefully soon to come! 
+Here is the link to the pygame git repo https://github.com/pygame you will need to have it in some form to play this game. 
+
+Thanks for checking this out, Have fun!
