@@ -77,8 +77,8 @@ def draw_text(surf, text, size, x, y):
 def draw_shield_bar(surf, x, y, pct):
     pct = max(pct, 0) 
     # moving them to top
-    # BAR_LENGTH = 100
-    # BAR_HEIGHT = 10
+    BAR_LENGTH = 100
+    BAR_HEIGHT = 10
     fill = (pct / 100) * BAR_LENGTH
     outline_rect = pygame.Rect(x, y, BAR_LENGTH, BAR_HEIGHT)
     fill_rect = pygame.Rect(x, y, fill, BAR_HEIGHT)
@@ -135,7 +135,7 @@ class Player(pygame.sprite.Sprite):
         self.image = pygame.transform.scale(player_img, (120, 120))
         self.image.set_colorkey(BLACK)
         self.rect = self.image.get_rect()
-        self.radius = 50
+        self.radius = 60
         self.rect.centerx = WIDTH / 2
         self.rect.bottom = HEIGHT - 10
         self.speedx = 0 
@@ -167,9 +167,9 @@ class Player(pygame.sprite.Sprite):
         # This will give back a list of the keys which happen to be pressed down at that moment
         keystate = pygame.key.get_pressed()     
         if keystate[pygame.K_LEFT]:
-            self.speedx = -5
+            self.speedx = -10
         elif keystate[pygame.K_RIGHT]:
-            self.speedx = 5
+            self.speedx = 10
 
         # Fire weapons by holding spacebar
         if keystate[pygame.K_SPACE]:
@@ -237,7 +237,7 @@ class Mob(pygame.sprite.Sprite):
         self.radius = int(self.rect.width *0.90 / 2)
         self.rect.x = random.randrange(0, WIDTH - self.rect.width)
         self.rect.y = random.randrange(-150, -100)
-        self.speedy = random.randrange(10, 50)   # for randomizing the speed of the Mob
+        self.speedy = random.randrange(15, 50)   # for randomizing the speed of the Mob
 
         # randomize the movements a little more 
         self.speedx = random.randrange(-3, 3)
@@ -299,7 +299,7 @@ class Bullet(pygame.sprite.Sprite):
         # place the bullet according to the current position of the player
         self.rect.bottom = y 
         self.rect.centerx = x
-        self.speedy = -10
+        self.speedy = -20
 
 
     def update(self):
@@ -321,7 +321,7 @@ class Missile(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.bottom = y
         self.rect.centerx = x
-        self.speedy = -10
+        self.speedy = -20
 
     def update(self):
         self.rect.y += self.speedy
