@@ -279,7 +279,7 @@ class Pow(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         # place the bullet according to the current position of the player
         self.rect.center = center
-        self.speedy = 2
+        self.speedy = 4
 
     def update(self):
         self.rect.y += self.speedy
@@ -454,7 +454,7 @@ while running:
         
         expl = Explosion(hit.rect.center, 'lg')
         all_sprites.add(expl)
-        if random.random() > 0.9:
+        if random.random() > 2:
             pow = Pow(hit.rect.center)
             all_sprites.add(pow)
             powerups.add(pow)
