@@ -2,6 +2,7 @@
 from __future__ import division
 import pygame
 import random
+import time
 from os import path
 
 # Pulling data from assets folder
@@ -62,8 +63,8 @@ def main_menu():
 
     ready = pygame.mixer.Sound(path.join(sound_folder,'Little-kitty-meow.ogg'))
     ready.play()
-    pygame.display.update()
-    
+    pygame.display.update
+
 
 def draw_text(surf, text, size, x, y):
     # selecting a cross platform font to display the score
@@ -454,7 +455,7 @@ while running:
         
         expl = Explosion(hit.rect.center, 'lg')
         all_sprites.add(expl)
-        if random.random() > 2:
+        if random.random() > 0.9:
             pow = Pow(hit.rect.center)
             all_sprites.add(pow)
             powerups.add(pow)
