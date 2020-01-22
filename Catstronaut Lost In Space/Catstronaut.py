@@ -10,9 +10,9 @@ img_dir = path.join(path.dirname(__file__), 'Game_Photos')
 sound_folder = path.join(path.dirname(__file__), 'Game_Audio')
 
 # Define Pygame window settings
-WIDTH = 600
-HEIGHT = 600
-FPS = 120 # you don't need to use 120 fps, but I prefer it.
+WIDTH = 900
+HEIGHT = 900
+FPS = 60
 POWERUP_TIME = 3000 # Powerups last 3 seconds to make the game a little challenging
 BAR_LENGTH = 100
 BAR_HEIGHT = 10
@@ -238,7 +238,7 @@ class Mob(pygame.sprite.Sprite):
         self.radius = int(self.rect.width *0.90 / 2)
         self.rect.x = random.randrange(0, WIDTH - self.rect.width)
         self.rect.y = random.randrange(-150, -100)
-        self.speedy = random.randrange(15, 50)   # for randomizing the speed of the Mob
+        self.speedy = random.randrange(15, 35)   # for randomizing the speed of the Mob
 
         # randomize the movements a little more 
         self.speedx = random.randrange(-3, 3)
