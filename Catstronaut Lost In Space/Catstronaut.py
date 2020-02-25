@@ -1,4 +1,3 @@
-# Gettin some modules I'm gonna need
 from __future__ import division
 import pygame
 import random
@@ -10,8 +9,8 @@ img_dir = path.join(path.dirname(__file__), 'Game_Photos')
 sound_folder = path.join(path.dirname(__file__), 'Game_Audio')
 
 # Define Pygame window settings
-WIDTH = 900
-HEIGHT = 900
+WIDTH = 800
+HEIGHT = 800
 FPS = 60
 POWERUP_TIME = 3000 # Powerups last 3 seconds to make the game a little challenging
 BAR_LENGTH = 100
@@ -56,8 +55,8 @@ def main_menu():
                 pygame.quit()
                 quit() 
         else: # For displaying the menu options
-            draw_text(screen, "Press [ENTER] To Begin", 30, WIDTH/2, HEIGHT/2)
-            draw_text(screen, "Press [ESC] or [Q] To Quit", 30, WIDTH/2, (HEIGHT/2)+50)
+            draw_text(screen, "Press [ENTER] To Begin", 50, WIDTH/2, HEIGHT/2)
+            draw_text(screen, "Press [ESC] or [Q] To Quit", 50, WIDTH/2, (HEIGHT/2)+50)
             pygame.display.update()
 
 
@@ -78,8 +77,8 @@ def draw_text(surf, text, size, x, y):
 def draw_shield_bar(surf, x, y, pct):
     pct = max(pct, 0) 
     # moving them to top
-    BAR_LENGTH = 100
-    BAR_HEIGHT = 10
+    BAR_LENGTH = 200
+    BAR_HEIGHT = 20
     fill = (pct / 100) * BAR_LENGTH
     outline_rect = pygame.Rect(x, y, BAR_LENGTH, BAR_HEIGHT)
     fill_rect = pygame.Rect(x, y, fill, BAR_HEIGHT)
@@ -90,7 +89,7 @@ def draw_shield_bar(surf, x, y, pct):
 def draw_lives(surf, x, y, lives, img):
     for i in range(lives):
         img_rect= img.get_rect()
-        img_rect.x = x + 30 * i
+        img_rect.x = x + 35 * i
         img_rect.y = y
         surf.blit(img, img_rect)
 
@@ -133,7 +132,7 @@ class Player(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
         # All of these variables can be changed to edit game functions (you can  even make the cat huuuge)
-        self.image = pygame.transform.scale(player_img, (120, 120))
+        self.image = pygame.transform.scale(player_img, (140, 140))
         self.image.set_colorkey(BLACK)
         self.rect = self.image.get_rect()
         self.radius = 60
@@ -238,14 +237,14 @@ class Mob(pygame.sprite.Sprite):
         self.radius = int(self.rect.width *0.90 / 2)
         self.rect.x = random.randrange(0, WIDTH - self.rect.width)
         self.rect.y = random.randrange(-150, -100)
-        self.speedy = random.randrange(15, 35)   # for randomizing the speed of the Mob
+        self.speedy = random.randrange(5, 10)   # for randomizing the speed of the Mob                     ########
 
         # randomize the movements a little more 
         self.speedx = random.randrange(-3, 3)
 
         # adding rotation to the mob element
         self.rotation = 0
-        self.rotation_speed = random.randrange(-8, 10)
+        self.rotation_speed = random.randrange(-8, 15)
         self.last_update = pygame.time.get_ticks()  # time when the rotation has to happen
         
     def rotate(self):
@@ -335,7 +334,7 @@ background = pygame.image.load(path.join(img_dir, 'Galaxy.png')).convert()
 background_rect = background.get_rect()
 # ^ Background first
 player_img = pygame.image.load(path.join(img_dir, 'Catstronaut.png')).convert()
-player_mini_img = pygame.transform.scale(player_img, (25, 19))
+player_mini_img = pygame.transform.scale(player_img, (60, 45))                                                #########
 player_mini_img.set_colorkey(BLACK)
 bullet_img = pygame.image.load(path.join(img_dir, 'Big_Red_Laser.png')).convert()
 missile_img = pygame.image.load(path.join(img_dir, 'Big_Boom_Device.png')).convert_alpha()
@@ -348,7 +347,7 @@ meteor_list = [
     'meteorBrown_med3.png',
     'meteorBrown_small1.png',
     'meteorBrown_small2.png',
-    'meteorBrown_tiny1.png'
+    'meteorBrown_tiny1.png',
 ]
 
 for image in meteor_list:
@@ -413,10 +412,10 @@ while running:
 
         # Spawn you a group of mobs
         mobs = pygame.sprite.Group()
-        for i in range(8):   # 8 mobs max to be spawned
-            # mob_element = Mob()
-            # all_sprites.add(mob_element)
-            # mobs.add(mob_element)
+        for i in range(12):   # 8 mobs max to be spawned                                        ###########
+            #mob_element = Mob()
+            #all_sprites.add(mob_element)
+            #mobs.add(mob_element)
             newmob()
 
         # group for bullets
@@ -482,7 +481,7 @@ while running:
     hits = pygame.sprite.spritecollide(player, powerups, True)
     for hit in hits:
         if hit.type == 'shield':
-            player.shield += random.randrange(10, 30)
+            player.shield += random.randrange(10, 30)                                                   ###########
             if player.shield >= 100:
                 player.shield = 100
         if hit.type == 'gun':
@@ -499,11 +498,11 @@ while running:
     screen.blit(background, background_rect)
 
     all_sprites.draw(screen)
-    draw_text(screen, str(score), 18, WIDTH / 2, 10)     # 10px down from the screen
+    draw_text(screen, str(score), 50, WIDTH / 2, 10)     # 10px down from the screen
     draw_shield_bar(screen, 5, 5, player.shield)
 
     # Draw lives
-    draw_lives(screen, WIDTH - 100, 5, player.lives, player_mini_img)
+    draw_lives(screen, WIDTH - 150, 10, player.lives, player_mini_img)
 
     # Making sure we get the right orientation here (no upside-down catstronauts)
-    pygame.display.flip()    
+    pygame.display.flip()
